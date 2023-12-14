@@ -1,0 +1,11 @@
+function cfo_acoustic(input, output, fo, snr)
+    [y, fs] = audioread(input);
+    %Add AWGN
+    y = awgn(y, snr, 'measured');
+    %apply CFO to signal
+    pfo = comm.PhaseFrequencyOffset(FrequencyOffset=fo, SampleRate=fs);
+    
+    %y = real(y);
+    y = y/max(abs(y));
+    audiowrite(output, y, fs, 'BitsPerSample', 16);
+end
